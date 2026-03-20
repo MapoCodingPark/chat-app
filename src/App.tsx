@@ -1,10 +1,10 @@
-import ChatPage from "./pages/ChatPage.tsx";
+import ChatPage from './pages/ChatPage.tsx'
 
-const  App = () => {
+const App = () => {
   return (
     <>
-      <div> hi chat app</div>
-      <ChatPage/>
+      <div> hi chat app </div>
+      <ChatPage />
     </>
   )
 }
