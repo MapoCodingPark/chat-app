@@ -1,13 +1,15 @@
 import styled from '@emotion/styled';
-import ChatRoomList from '../features/components/ChatRoomList.tsx';
-import ChatPanel from '../features/components/ChatPanel.tsx';
+import ChatRoomList from '../features/chatRoomList/ChatRoomList.tsx';
+import ChatPanel from '../features/chatPanel/ChatPanel.tsx';
+import { useChatStore } from '../store/chatStore.ts';
 
 const ChatPage = () => {
+  const selectedRoomId = useChatStore((state) => state.selectedRoomId);
   return (
     <>
       <PageLayout>
-        <ChatRoomList />
-        <ChatPanel />
+        <ChatRoomList isRoomSelected={!!selectedRoomId} />
+        <ChatPanel roomId={selectedRoomId} />
       </PageLayout>
     </>
   );
