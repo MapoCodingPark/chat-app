@@ -1,3 +1,4 @@
+// src/mock/chatMock.ts
 import type { ChatRoom, MessagesByRoomId, UsersById } from '../types/chat.ts';
 
 export const CURRENT_USER_ID = 'me';
@@ -16,21 +17,6 @@ export const usersById: UsersById = {
     name: 'Bob',
   },
 };
-
-export const chatRooms: ChatRoom[] = [
-  {
-    id: 'room1',
-    name: 'Alice',
-    participantIds: ['me', 'user1'],
-    unreadCount: 0,
-  },
-  {
-    id: 'room2',
-    name: 'Bob',
-    participantIds: ['me', 'user2'],
-    unreadCount: 2,
-  },
-];
 
 export const messagesByRoomId: MessagesByRoomId = {
   room1: [
@@ -66,3 +52,26 @@ export const messagesByRoomId: MessagesByRoomId = {
     },
   ],
 };
+
+export const chatRooms: ChatRoom[] = [
+  {
+    id: 'room1',
+    name: 'Alice',
+    participantIds: ['me', 'user1'],
+    unreadCount: 0,
+    lastMessage: {
+      text: '안녕하세요. 반가워요.',
+      createdAt: '2026-03-20T09:01:00',
+    },
+  },
+  {
+    id: 'room2',
+    name: 'Bob',
+    participantIds: ['me', 'user2'],
+    unreadCount: 2,
+    lastMessage: {
+      text: '확인 부탁드려요!',
+      createdAt: '2026-03-20T08:31:00',
+    },
+  },
+];

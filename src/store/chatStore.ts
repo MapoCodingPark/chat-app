@@ -15,13 +15,10 @@ type ChatStore = {
   receiveMessage: (roomId: string, message: Message) => void;
 };
 
-const sortChatRoomsByLatestMessage = (
-  chatRooms: ChatRoom[],
-  messagesByRoomId: MessagesByRoomId,
-) => {
+const sortChatRoomsByLatestMessage = (chatRooms: ChatRoom[]) => {
   return [...chatRooms].sort((a, b) => {
-    const latestMessageOfA = messagesByRoomId[a.id]?.at(-1);
-    const latestMessageOfB = messagesByRoomId[b.id]?.at(-1);
+    const latestMessageOfA = a.lastMessage;
+    const latestMessageOfB = b.lastMessage;
 
     if (!latestMessageOfA && !latestMessageOfB) {
       return 0;
@@ -45,7 +42,7 @@ const sortChatRoomsByLatestMessage = (
 export const useChatStore = create<ChatStore>((set) => ({
   currentUserId: CURRENT_USER_ID,
   selectedRoomId: null,
-  chatRooms: sortChatRoomsByLatestMessage(chatRooms, messagesByRoomId),
+  chatRooms: sortChatRoomsByLatestMessage(chatRooms),
   messagesByRoomId,
   usersById,
 
@@ -83,9 +80,23 @@ export const useChatStore = create<ChatStore>((set) => ({
         [roomId]: [...(state.messagesByRoomId[roomId] ?? []), newMessage],
       };
 
+      const nextChatRooms = state.chatRooms.map((room) => {
+        if (room.id !== roomId) {
+          return room;
+        }
+
+        return {
+          ...room,
+          lastMessage: {
+            text: newMessage.text,
+            createdAt: newMessage.createdAt,
+          },
+        };
+      });
+
       return {
         messagesByRoomId: nextMessagesByRoomId,
-        chatRooms: sortChatRoomsByLatestMessage(state.chatRooms, nextMessagesByRoomId),
+        chatRooms: sortChatRoomsByLatestMessage(nextChatRooms),
       };
     }),
 
@@ -106,12 +117,16 @@ export const useChatStore = create<ChatStore>((set) => ({
         return {
           ...room,
           unreadCount: isSelectedRoom ? 0 : room.unreadCount + 1,
+          lastMessage: {
+            text: message.text,
+            createdAt: message.createdAt,
+          },
         };
       });
 
       return {
         messagesByRoomId: nextMessagesByRoomId,
-        chatRooms: sortChatRoomsByLatestMessage(nextChatRooms, nextMessagesByRoomId),
+        chatRooms: sortChatRoomsByLatestMessage(nextChatRooms),
       };
     }),
 }));

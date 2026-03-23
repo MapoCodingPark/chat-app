@@ -1,12 +1,11 @@
 import styled from '@emotion/styled';
 import { memo } from 'react';
+import { useChatStore } from '../../store/chatStore.ts';
 
-type ChatPanelProps = {
-  roomId: string | null;
-};
+const ChatPanel = memo(() => {
+  const selectedRoomId = useChatStore((state) => state.selectedRoomId);
 
-const ChatPanel = memo(({ roomId }: ChatPanelProps) => {
-  return <ChatPanelWrapper>{roomId}</ChatPanelWrapper>;
+  return <ChatPanelWrapper>{selectedRoomId}</ChatPanelWrapper>;
 });
 
 ChatPanel.displayName = 'ChatPanel';
