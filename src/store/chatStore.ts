@@ -39,6 +39,8 @@ const sortChatRoomsByLatestMessage = (chatRooms: ChatRoom[]) => {
   });
 };
 
+const createId = () => `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+
 const createMessage = ({
   roomId,
   senderId,
@@ -48,7 +50,7 @@ const createMessage = ({
   senderId: string;
   text: string;
 }): Message => ({
-  id: crypto.randomUUID(),
+  id: createId(),
   roomId,
   senderId,
   text,
