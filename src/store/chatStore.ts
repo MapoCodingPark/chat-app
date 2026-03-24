@@ -12,7 +12,7 @@ type ChatStore = {
   selectRoom: (roomId: string) => void;
   unselectRoom: () => void;
   sendMessage: (roomId: string, text: string) => void;
-  receiveMessage: (roomId: string, message: Message) => void;
+  receiveMessage: (roomId: string, message: string, senderId: string) => void;
 };
 
 const sortChatRoomsByLatestMessage = (chatRooms: ChatRoom[]) => {
@@ -37,6 +37,61 @@ const sortChatRoomsByLatestMessage = (chatRooms: ChatRoom[]) => {
       new Date(latestMessageOfA.createdAt).getTime()
     );
   });
+};
+
+const createMessage = ({
+  roomId,
+  senderId,
+  text,
+}: {
+  roomId: string;
+  senderId: string;
+  text: string;
+}): Message => ({
+  id: crypto.randomUUID(),
+  roomId,
+  senderId,
+  text,
+  createdAt: new Date().toISOString(),
+});
+
+const appendMessageToRoom = ({
+  chatRooms,
+  messagesByRoomId,
+  roomId,
+  message,
+  increaseUnread,
+}: {
+  chatRooms: ChatRoom[];
+  messagesByRoomId: MessagesByRoomId;
+  roomId: string;
+  message: Message;
+  increaseUnread: boolean;
+}): { nextMessagesByRoomId: MessagesByRoomId; nextChatRooms: ChatRoom[] } => {
+  const nextMessages = [...(messagesByRoomId[roomId] ?? []), message];
+
+  const nextChatRooms = sortChatRoomsByLatestMessage(
+    chatRooms.map((room) =>
+      room.id === roomId
+        ? {
+            ...room,
+            lastMessage: {
+              text: message.text,
+              createdAt: message.createdAt,
+            },
+            unreadCount: increaseUnread ? room.unreadCount + 1 : room.unreadCount,
+          }
+        : room,
+    ),
+  );
+
+  return {
+    nextMessagesByRoomId: {
+      ...messagesByRoomId,
+      [roomId]: nextMessages,
+    },
+    nextChatRooms: nextChatRooms,
+  };
 };
 
 export const useChatStore = create<ChatStore>((set) => ({
@@ -67,66 +122,51 @@ export const useChatStore = create<ChatStore>((set) => ({
         return state;
       }
 
-      const newMessage: Message = {
-        id: crypto.randomUUID(),
+      const message = createMessage({
         roomId,
         senderId: state.currentUserId,
         text: trimmedText,
-        createdAt: new Date().toISOString(),
-      };
+      });
 
-      const nextMessagesByRoomId = {
-        ...state.messagesByRoomId,
-        [roomId]: [...(state.messagesByRoomId[roomId] ?? []), newMessage],
-      };
-
-      const nextChatRooms = state.chatRooms.map((room) => {
-        if (room.id !== roomId) {
-          return room;
-        }
-
-        return {
-          ...room,
-          lastMessage: {
-            text: newMessage.text,
-            createdAt: newMessage.createdAt,
-          },
-        };
+      const { nextMessagesByRoomId, nextChatRooms } = appendMessageToRoom({
+        chatRooms: state.chatRooms,
+        messagesByRoomId: state.messagesByRoomId,
+        roomId,
+        message,
+        increaseUnread: false,
       });
 
       return {
         messagesByRoomId: nextMessagesByRoomId,
-        chatRooms: sortChatRoomsByLatestMessage(nextChatRooms),
+        chatRooms: nextChatRooms,
       };
     }),
 
-  receiveMessage: (roomId, message) =>
+  receiveMessage: (roomId, text, senderId) =>
     set((state) => {
-      const nextMessagesByRoomId = {
-        ...state.messagesByRoomId,
-        [roomId]: [...(state.messagesByRoomId[roomId] ?? []), message],
-      };
+      const trimmedText = text.trim();
 
-      const nextChatRooms = state.chatRooms.map((room) => {
-        if (room.id !== roomId) {
-          return room;
-        }
+      if (!trimmedText) {
+        return state;
+      }
 
-        const isSelectedRoom = state.selectedRoomId === roomId;
+      const message = createMessage({
+        roomId,
+        senderId,
+        text: trimmedText,
+      });
 
-        return {
-          ...room,
-          unreadCount: isSelectedRoom ? 0 : room.unreadCount + 1,
-          lastMessage: {
-            text: message.text,
-            createdAt: message.createdAt,
-          },
-        };
+      const { nextMessagesByRoomId, nextChatRooms } = appendMessageToRoom({
+        chatRooms: state.chatRooms,
+        messagesByRoomId: state.messagesByRoomId,
+        roomId,
+        message,
+        increaseUnread: state.selectedRoomId !== roomId,
       });
 
       return {
         messagesByRoomId: nextMessagesByRoomId,
-        chatRooms: sortChatRoomsByLatestMessage(nextChatRooms),
+        chatRooms: nextChatRooms,
       };
     }),
 }));
