@@ -3,8 +3,9 @@ import Header from './Header.tsx';
 import { memo, useCallback } from 'react';
 import { useChatStore } from '../../store/chatStore.ts';
 import ChatRoomListItem from './ChatRoomListItem.tsx';
+import { Z_INDEX } from '../constants.ts';
 
-const CHAT_ROOM_TITLE = '채팅방';
+const CHAT_ROOM_TITLE = 'Chat';
 
 const ChatRoomList = memo(() => {
   const selectedRoomId = useChatStore((state) => state.selectedRoomId);
@@ -52,6 +53,8 @@ const ListWrapper = styled('div', {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  box-shadow: 4px 0 8px rgba(0, 0, 0, 0.08);
+  z-index: ${Z_INDEX.FLOW + 1};
 `;
 
 const RoomList = styled.ul`

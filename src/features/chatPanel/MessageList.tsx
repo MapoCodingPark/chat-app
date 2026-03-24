@@ -42,6 +42,7 @@ const ListWrapper = styled.main`
   flex: 1 0 0;
   min-height: 0;
   padding: ${tokens.spacing.xs};
+  overflow-y: scroll;
 `;
 
 const List = styled.ul`

@@ -15,7 +15,7 @@ const MessageListItem = memo(({ senderName, text, createdAt, isMine }: MessageLi
   return (
     <ItemWrapper isMine={isMine}>
       <ItemContent>
-        <SenderText>{senderName}</SenderText>
+        <SenderText isMine={isMine}>{senderName}</SenderText>
         <MessageBox>
           <MessageText>{text}</MessageText>
         </MessageBox>
@@ -40,9 +40,12 @@ const ItemContent = styled.div`
   flex-direction: column;
 `;
 
-const SenderText = styled.div`
+const SenderText = styled('div', { shouldForwardProp: (props) => props !== 'isMine' })<{
+  isMine: boolean;
+}>`
   font-size: ${tokens.fontSize.sm};
-  padding-left: ${tokens.spacing.sm};
+  padding: 0 ${tokens.spacing.sm};
+  text-align: ${({ isMine }) => (isMine ? 'end' : 'start')};
 `;
 
 const MessageBox = styled.div`
@@ -53,6 +56,9 @@ const MessageBox = styled.div`
 
 const MessageText = styled.div`
   font-size: ${tokens.fontSize.sm};
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
   ${ellipsis(3)};
 `;
 
