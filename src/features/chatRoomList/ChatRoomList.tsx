@@ -47,7 +47,7 @@ export default ChatRoomList;
 const ListWrapper = styled('div', {
   shouldForwardProp: (props) => props !== 'isRoomSelected',
 })<{ isRoomSelected: boolean }>`
-  width: ${({ isRoomSelected }) => (isRoomSelected ? '15%' : '90%')};
+  width: ${({ isRoomSelected }) => (isRoomSelected ? '15%' : '95%')};
   height: 100%;
   display: flex;
   flex-direction: column;

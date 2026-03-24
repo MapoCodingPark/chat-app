@@ -64,14 +64,14 @@ export const messagesByRoomId: MessagesByRoomId = {
       createdAt: '2026-03-23T15:30:00',
     },
     {
-      id: 'message5',
+      id: 'message6',
       roomId: 'room3',
       senderId: 'user3',
       text: '아니면 다른 것도 좋아',
       createdAt: '2026-03-23T15:31:00',
     },
     {
-      id: 'message5',
+      id: 'message7',
       roomId: 'room3',
       senderId: 'user3',
       text: '피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? ',
