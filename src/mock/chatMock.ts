@@ -16,6 +16,10 @@ export const usersById: UsersById = {
     id: 'user2',
     name: 'Bob',
   },
+  user3: {
+    id: 'user3',
+    name: 'Dream',
+  },
 };
 
 export const messagesByRoomId: MessagesByRoomId = {
@@ -41,14 +45,37 @@ export const messagesByRoomId: MessagesByRoomId = {
       roomId: 'room2',
       senderId: 'user2',
       text: '오늘 저녁에 시간 괜찮으세요?',
-      createdAt: '2026-03-20T08:30:00',
+      createdAt: '2026-03-22T08:30:00',
     },
     {
       id: 'message4',
       roomId: 'room2',
       senderId: 'user2',
       text: '확인 부탁드려요!',
-      createdAt: '2026-03-20T08:31:00',
+      createdAt: '2026-03-22T08:31:00',
+    },
+  ],
+  room3: [
+    {
+      id: 'message5',
+      roomId: 'room3',
+      senderId: 'user3',
+      text: '오늘 저녁은 피자 어때 ?',
+      createdAt: '2026-03-23T15:30:00',
+    },
+    {
+      id: 'message6',
+      roomId: 'room3',
+      senderId: 'user3',
+      text: '아니면 다른 것도 좋아',
+      createdAt: '2026-03-23T15:31:00',
+    },
+    {
+      id: 'message7',
+      roomId: 'room3',
+      senderId: 'user3',
+      text: '피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? ',
+      createdAt: '2026-03-23T15:31:30',
     },
   ],
 };
@@ -66,12 +93,22 @@ export const chatRooms: ChatRoom[] = [
   },
   {
     id: 'room2',
-    name: 'Bob',
+    name: 'Bobeeeeee',
     participantIds: ['me', 'user2'],
     unreadCount: 2,
     lastMessage: {
       text: '확인 부탁드려요!',
-      createdAt: '2026-03-20T08:31:00',
+      createdAt: '2026-03-22T08:31:00',
+    },
+  },
+  {
+    id: 'room3',
+    name: 'Dream Home',
+    participantIds: ['me', 'user3'],
+    unreadCount: 3,
+    lastMessage: {
+      text: '피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? 피맥 ㄱ? ',
+      createdAt: '2026-03-23T15:31:30',
     },
   },
 ];
