@@ -1,14 +1,13 @@
 import { memo } from 'react';
 import styled from '@emotion/styled';
-import { useChatStore } from '../../store/chatStore.ts';
 
 type HeaderProps = {
   title: string;
+  onClick?: () => void;
 };
 
-const Header = memo(({ title }: HeaderProps) => {
-  const unselectRoom = useChatStore((state) => state.unselectRoom);
-  return <HeaderButton onClick={unselectRoom}>{title}</HeaderButton>;
+const Header = memo(({ title, onClick }: HeaderProps) => {
+  return <HeaderButton onClick={onClick}>{title}</HeaderButton>;
 });
 
 Header.displayName = 'Header';

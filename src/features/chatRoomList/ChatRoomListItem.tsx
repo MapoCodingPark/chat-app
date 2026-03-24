@@ -2,6 +2,8 @@ import { memo } from 'react';
 import { formatMessageTime } from '../../utils/formatMessageTime.ts';
 import styled from '@emotion/styled';
 import type { ChatRoom } from '../../types/chat.ts';
+import CountBadge from './CountBadge.tsx';
+import { ellipsis } from '../../utils/styleUtils.ts';
 
 type ChatRoomListItemProps = {
   room: ChatRoom;
@@ -12,7 +14,7 @@ type ChatRoomListItemProps = {
 
 const ChatRoomListItem = memo(
   ({ room, isSelected, isRoomSelected, onClick }: ChatRoomListItemProps) => {
-    const lastMessageText = room.lastMessage?.text ?? '아직 메시지가 없습니다.';
+    const lastMessageText = room.lastMessage?.text ?? '';
     const lastMessageTime = room.lastMessage?.createdAt
       ? formatMessageTime(room.lastMessage.createdAt)
       : '';
@@ -26,7 +28,7 @@ const ChatRoomListItem = memo(
           </ContentWrapper>
           <ContentWrapper>
             {!isRoomSelected && <ItemLastMessage>{lastMessageText}</ItemLastMessage>}
-            <div>{room.unreadCount}</div>
+            <CountBadge count={room.unreadCount} />
           </ContentWrapper>
         </ChatRoomItemButton>
       </ChatRoomItem>
@@ -40,7 +42,7 @@ export default ChatRoomListItem;
 const ChatRoomItem = styled('li', { shouldForwardProp: (props) => props !== 'isSelected' })<{
   isSelected: boolean;
 }>`
-  background-color: white;
+  background-color: ${({ isSelected }) => (isSelected ? 'yellow' : '#fff')};
 `;
 
 const ChatRoomItemButton = styled.button`
@@ -59,8 +61,7 @@ const ContentWrapper = styled.div`
 const ItemTitle = styled.h4`
   flex: 1 0 0;
   margin: 0;
-  display: flex;
-  align-items: center;
+  ${ellipsis()};
 `;
 
 const ItemLastMessageTime = styled.p`
@@ -74,4 +75,5 @@ const ItemLastMessage = styled.p`
   font-size: 0.7rem;
   color: dimgray;
   margin: 0;
+  ${ellipsis(2)};
 `;
